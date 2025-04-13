@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/MovieMatrix/static/css/main.801fd6d5.css",
+    "main.js": "/MovieMatrix/static/js/main.71a840e8.js",
+    "static/js/453.ca28609e.chunk.js": "/MovieMatrix/static/js/453.ca28609e.chunk.js",
+    "static/media/logo.png": "/MovieMatrix/static/media/logo.ab829f413a165923eb35.png",
+    "index.html": "/MovieMatrix/index.html",
+    "main.801fd6d5.css.map": "/MovieMatrix/static/css/main.801fd6d5.css.map",
+    "main.71a840e8.js.map": "/MovieMatrix/static/js/main.71a840e8.js.map",
+    "453.ca28609e.chunk.js.map": "/MovieMatrix/static/js/453.ca28609e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.801fd6d5.css",
+    "static/js/main.71a840e8.js"
+  ]
+}
