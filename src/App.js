@@ -4,46 +4,78 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import MobileNavigation from './components/MobileNavigation';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBannerData,setImageURL } from './store/movieoSlice';
+import { setBannerData, setImageURL } from './store/movieoSlice';
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, provider } from "./firebase";
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const fetchTrendingData = async()=>{
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleGoogleLogin = async () => {
     try {
-        const response = await axios.get('/trending/all/week')
-
-        dispatch(setBannerData(response.data.results))
+      const result = await signInWithPopup(auth, provider);
+      console.log(result.user); // debug check
+      setUser(result.user);
     } catch (error) {
-        console.log("error",error)
+      console.error("Login failed", error);
     }
-  }
+  };
 
-  const fetchConfiguration = async()=>{
+  const logout = async () => {
     try {
-        const response = await axios.get("/configuration")
-
-        dispatch(setImageURL(response.data.images.secure_base_url+"original"))
+      await signOut(auth);
+      setUser(null);
     } catch (error) {
-      
+      console.error("Logout failed", error);
     }
-  }
+  };
 
-  useEffect(()=>{
-    fetchTrendingData()
-    fetchConfiguration()
-  },[])
-  
+  const fetchTrendingData = async () => {
+    try {
+      const response = await axios.get('/trending/all/week');
+      dispatch(setBannerData(response.data.results));
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const fetchConfiguration = async () => {
+    try {
+      const response = await axios.get("/configuration");
+      dispatch(setImageURL(response.data.images.secure_base_url + "original"));
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTrendingData();
+    fetchConfiguration();
+  }, []);
+
   return (
     <main className='pb-14 lg:pb-0'>
-        <Header/>
-        <div className='min-h-[90vh]'>
-            <Outlet/>
-        </div>
-        <Footer/>
-        <MobileNavigation/>
+      <Header 
+        user={user}
+        handleGoogleLogin={handleGoogleLogin}
+        logout={logout}
+      />
+      <div className='min-h-[90vh]'>
+        <Outlet />
+      </div>
+      <Footer />
+      <MobileNavigation />
     </main>
   );
 }
