@@ -1,9 +1,23 @@
 import { UserCircle, LogOut, Star } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function UserAuthIcon({ user, handleGoogleLogin, logout }) {
   const [open, setOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  // Reset imageError whenever user.photoURL changes
+  useEffect(() => {
+    setImageError(false);
+  }, [user?.photoURL]);
+
+  const getInitial = () => {
+    return user?.displayName
+      ? user.displayName.charAt(0).toUpperCase()
+      : user?.email
+      ? user.email.charAt(0).toUpperCase()
+      : "?";
+  };
 
   return (
     <div className="relative">
@@ -11,21 +25,18 @@ function UserAuthIcon({ user, handleGoogleLogin, logout }) {
         <div>
           <div
             onClick={() => setOpen(!open)}
-            className="relative w-10 h-10 bg-red-500 text-white rounded-full cursor-pointer overflow-hidden"
+            className="relative w-10 h-10 bg-red-500 text-white rounded-full cursor-pointer overflow-hidden flex items-center justify-center"
           >
-            {user.photoURL ? (
+            {user.photoURL && !imageError ? (
               <img
                 src={user.photoURL}
-                alt={user.displayName || "User Avatar"}
+                alt=""
+                onError={() => setImageError(true)}
                 className="absolute w-full h-full object-cover rounded-full"
               />
             ) : (
-              <span className="text-lg">
-                {user?.displayName
-                  ? user.displayName.charAt(0).toUpperCase()
-                  : user?.email
-                  ? user.email.charAt(0).toUpperCase()
-                  : "?"}
+              <span className="text-lg flex items-center justify-center w-full h-full">
+                {getInitial()}
               </span>
             )}
           </div>
