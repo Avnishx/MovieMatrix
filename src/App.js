@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux';
 import { setBannerData, setImageURL } from './store/movieoSlice';
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase";
+import { Toaster } from 'react-hot-toast'; // 👈 added toast import
+
 
 function App() {
   const dispatch = useDispatch();
@@ -25,7 +27,7 @@ function App() {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      console.log(result.user); // debug check
+      console.log(result.user);
       setUser(result.user);
     } catch (error) {
       console.error("Login failed", error);
@@ -71,9 +73,14 @@ function App() {
         handleGoogleLogin={handleGoogleLogin}
         logout={logout}
       />
+
+      {/* 👇 Toast Notification Container */}
+      <Toaster position="top-center" reverseOrder={false} />
+
       <div className='min-h-[90vh]'>
         <Outlet />
       </div>
+
       <Footer />
       <MobileNavigation />
     </main>
