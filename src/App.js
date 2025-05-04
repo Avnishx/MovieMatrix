@@ -9,12 +9,11 @@ import { useDispatch } from 'react-redux';
 import { setBannerData, setImageURL } from './store/movieoSlice';
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase";
-import { Toaster } from 'react-hot-toast'; // 👈 added toast import
-
+import { Toaster } from 'react-hot-toast';
+import ScrollToTop from './components/ScrollToTop'; // 👈 imported here
 
 function App() {
   const dispatch = useDispatch();
-
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -68,13 +67,13 @@ function App() {
 
   return (
     <main className='pb-14 lg:pb-0'>
+      <ScrollToTop /> {/* 👈 added here */}
       <Header 
         user={user}
         handleGoogleLogin={handleGoogleLogin}
         logout={logout}
       />
 
-      {/* 👇 Toast Notification Container */}
       <Toaster position="top-center" reverseOrder={false} />
 
       <div className='min-h-[90vh]'>

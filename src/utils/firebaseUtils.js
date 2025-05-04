@@ -31,7 +31,8 @@ const addToWatchlist = async (movie) => {
   try {
     await setDoc(doc(db, "users", user.uid, "watchlist", movie.id.toString()), {
       ...movie,
-      createdAt: serverTimestamp()  // ✅ added timestamp here bro
+      createdAt: serverTimestamp(),
+      watched: false, // Initialize watched status as false
     });
 
     const movieTitle = movie.title || movie.name || "Movie";
@@ -52,9 +53,9 @@ const addToWatchlist = async (movie) => {
         secondary: '#0f0c29',
       },
     });
-
   } catch (error) {
     console.error("Error adding to watchlist:", error);
+    toast.error("Failed to add to watchlist.");
   }
 };
 
