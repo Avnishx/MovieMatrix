@@ -5,10 +5,9 @@ const Footer = () => {
   return (
     <footer className='text-center bg-neutral-600 bg-opacity-35 text-neutral-400 py-2'>
         <div className='flex items-center justify-center gap-4'>
-          <Link to="/" >About</Link>
-          <Link to="/">Contact</Link>
+           <p>...............</p>
         </div>
-        <p className='text-sm'>Created by Avnish</p>
+        <p className='text-sm'>Created by Avnish, Sumit, Harsh</p>
     </footer>
   )
 }
